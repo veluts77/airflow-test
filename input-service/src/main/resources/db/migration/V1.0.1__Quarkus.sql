@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS test_input;
 CREATE TABLE test_input
 (
   id INT,
