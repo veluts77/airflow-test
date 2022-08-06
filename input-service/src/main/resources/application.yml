@@ -1,0 +1,14 @@
+quarkus:
+  http:
+    port: 8081
+  datasource:
+    db-kind: postgresql
+    username: airflow
+    password: airflow
+    jdbc:
+      driver: org.postgresql.Driver
+      url: jdbc:postgresql://${DB_HOST:localhost}:5432/airflow
+  # Run Flyway migrations automatically
+  flyway:
+    migrate-at-start: true
+    baseline-on-migrate: true

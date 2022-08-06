@@ -1,0 +1,54 @@
+@startuml
+actor User as user
+participant "Input svc" as input
+
+box DB #eeffee
+participant "Stage DB" as sdb
+participant "Results DB" as rdb
+participant "Errors DB" as edb
+end box
+
+box Airflow DAG #ffffee
+participant "collect and\ndistribute" as collect
+participant "visualize\nresults" as vis
+participant "send\nerrors" as send
+end box
+
+participant "Errors svc" as errors
+
+user -> input : запустить сервис
+alt если таблицы еще нет
+input -> sdb : создаем\nтаблицу
+end
+loop несколько раз
+user -> input : отправляем\nимя и фамилию\nчерез API
+input -> sdb : запись в БД
+end
+...
+user -> collect : запустить DAG (возможен запуск по расписанию)
+collect -> rdb : пересоздать таблицу
+collect -> edb : пересоздать\nтаблицу
+collect -> sdb : чтение данных из таблицы\n(еще не обработанных)
+collect <-- sdb : сырые имена и фамилии
+loop для всех полученных записей
+alt запись не содержит ошибок
+collect -> collect : обработака (to Uppercase)
+collect -> rdb : добавление обработанной\nзаписи в таблицу
+else есть ошибки (напр. цифры в имени)
+collect -> edb : добавление\nзаписи с ошибкой
+end
+collect -> sdb : запись помечается обработанной
+end
+
+collect -> vis : передача управление по DAG
+collect -> send : передача управление по DAG\n(таски могут выполняться параллельно)
+
+rdb <- vis : получение результата
+rdb --> vis : результат
+vis -> vis : вывод в консоль\nрезультата и\nкраткой сводки
+
+edb <- send : получение ошибок
+edb --> send : ошибки
+send -> errors : передача информации\nоб ощибках через API
+errors -> errors : визуализация\n(вывод в консоль)\nошибок
+@enduml
