@@ -26,6 +26,7 @@ cd ..
 docker compose up
 ```
 после запуска сервисов в браузере открыть http://127.0.0.1:8080/
+Логин/пароль: airflow/airflow
 
 Добавление DB Connection
 ------------------------
@@ -50,7 +51,7 @@ curl -X POST "http://localhost:8081/input?firstname=Bad&lastname=Examp1e"
 curl -X POST "http://localhost:8081/input?firstname=Good&lastname=Example"
 curl -X POST "http://localhost:8081/input?firstname=Good&lastname=Name"
 ```
-Запуск DAG в Airflow
+Запуск DAG в Airflow "my_dag_test"
 
 Просмотр результата в Airflow
 
