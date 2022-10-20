@@ -4,13 +4,25 @@ Option for local one node cluster like "Rancher in docker"
 
 # Installation
 
+## Create namespace
+
+```
+kubectl create namespace airflow
+```
+
 ## Install Storage class and PVs first
 
 ```
 kubectl apply -f add_pvs.yaml --namespace airflow
 ```
 
-## Install helm
+## Install helm chart
+
+```
+helm repo add apache-airflow https://airflow.apache.org
+helm repo update
+helm search repo airflow
+```
 
 ```sh
 helm install -f values.yaml airflow apache-airflow/airflow --namespace airflow  --debug 
