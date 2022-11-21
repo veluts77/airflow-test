@@ -1791,14 +1791,14 @@ dags:
     # git@github.com:apache/airflow.git
     # https example: https://github.com/apache/airflow.git
     repo: https://github.com/veluts77/airflow-test.git
-    branch: v2-2-stable
+    branch: main
     rev: HEAD
     depth: 1
     # the number of consecutive failures allowed before aborting
     maxFailures: 0
     # subpath within the repo where dags are located
     # should be "" if dags are at repo root
-    subPath: "tests/dags"
+    subPath: "dags"
     # if your repo needs a user name password
     # you can load them to a k8s secret like the one below
     #   ---
@@ -1848,10 +1848,10 @@ dags:
     resources:
       limits:
         cpu: 300m
-        memory: 256Mi
+        memory: 300Mi
       requests:
         cpu: 100m
-        memory: 128Mi
+        memory: 300Mi
 
 logs:
   persistence:
